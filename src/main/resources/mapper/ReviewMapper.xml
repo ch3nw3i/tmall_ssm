@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.how2j.tmall.mapper.ReviewMapper">
+
+    <select id="list" parameterType="Integer" resultType="Review">
+        select id, content, uid, pid, createDate from review where pid = #{pid} order by createDate desc
+    </select>
+
+    <select id="count" parameterType="Integer" resultType="Integer">
+        select count(*) from review where pid = #{pid}
+    </select>
+</mapper>

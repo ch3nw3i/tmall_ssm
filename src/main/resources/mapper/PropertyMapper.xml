@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.how2j.tmall.mapper.PropertyMapper">
+
+    <resultMap id="propertyMap" type="Property">
+        <id column="id" property="id"/>
+        <result column="cid" property="cid"/>
+        <result column="name" property="name"/>
+        <association property="category" javaType="Category">
+            <id column="category_id" property="id"/>
+            <result column="category_name" property="name"/>
+        </association>
+    </resultMap>
+
+    <select id="list" parameterType="Integer" resultType="Property">
+        select id, cid, name from property where cid = #{cid}
+        <if test="page.start!=null and page.count!=null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <select id="listByCid" parameterType="Integer" resultType="Property">
+        select id, cid, name from property where cid = #{cid} order by id asc
+    </select>
+
+    <select id="total" parameterType="Integer" resultType="Integer">
+        select count(*) from property where cid = #{cid}
+    </select>
+
+    <select id="get" parameterType="Integer" resultMap="propertyMap">
+        select p.id, p.cid, p.name,
+               c.id as category_id, c.name as category_name
+        from property p
+        left join category c on p.cid = c.id
+        where p.id = #{id}
+    </select>
+
+    <insert id="add" parameterType="String" useGeneratedKeys="true" keyProperty="id">
+        insert into property ( cid, name ) values ( #{cid}, #{name} )
+    </insert>
+
+    <delete id="delete" parameterType="Integer">
+        delete from property where id = #{id}
+    </delete>
+
+    <update id="update" parameterType="Property">
+        update property set cid = #{cid}, name = #{name} where id = #{id}
+    </update>
+</mapper>

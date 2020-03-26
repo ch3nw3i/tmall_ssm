@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.how2j.tmall.mapper.CartMapper">
+    <resultMap id="cartMap" type="Cart">
+        <id column="id" property="id"/>
+        <result column="pid" property="pid"/>
+        <result column="uid" property="uid"/>
+        <result column="number" property="number"/>
+        <association property="product" javaType="Product">
+            <id column="productid" property="id"/>
+            <result column="name" property="name"/>
+            <result column="stock" property="stock"/>
+            <result column="originalPrice" property="originalPrice"/>
+            <result column="promotePrice" property="promotePrice"/>
+            <association property="firstProductImage" javaType="ProductImage">
+                <id column="piid" property="id"/>
+                <result column="pid" property="pid"/>
+                <result column="type" property="type"/>
+            </association>
+        </association>
+    </resultMap>
+    <select id="selectByUid" parameterType="Integer" resultMap="cartMap">
+        select c.id, c.pid, c.uid, c.number,
+               p.id as productid , p.name, p.stock, p.originalPrice, p.promotePrice,
+               pi.id as piid, pi.pid, pi.type
+        from cart c
+        left join product p on c.pid = p.id
+        left join productimage pi on p.id = pi.pid
+        where c.uid = #{uid}
+    </select>
+
+    <insert id="insert" parameterType="Cart" useGeneratedKeys="true" keyProperty="id">
+        insert into cart(pid, uid, number) values (#{pid}, #{uid}, #{number})
+    </insert>
+
+    <select id="getCartTotalItemNumberByUid" parameterType="Integer" resultType="Integer">
+        select count(id) from cart where uid = #{uid}
+    </select>
+
+    <update id="update" parameterType="Cart">
+        update cart set number = #{number} where id = #{id} and uid = #{uid} and pid = #{pid}
+    </update>
+
+    <delete id="deleteById" parameterType="Integer">
+        delete from cart where id = #{id}
+    </delete>
+</mapper>

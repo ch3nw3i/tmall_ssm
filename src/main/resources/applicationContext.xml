@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+
+    <context:component-scan base-package="com.how2j.tmall.service"/>
+
+    <!-- 导入数据库配置文件 -->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+    <!-- 配置数据库连接池 -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <!-- 基本属性 url、user、password -->
+        <property name="driverClass" value="${jdbc.driver}"/>
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+        <property name="user" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <!--Mybatis的SessionFactory配置-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="typeAliasesPackage" value="com.how2j.tmall.pojo"/>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations" value="classpath:mapper/*Mapper.xml"/>
+        <!--分页插件，目前先注释，后面重构的时候才会使用
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageInterceptor">
+                    <property name="properties">
+                        <value>S
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
+        -->
+    </bean>
+
+    <!--Mybatis的Mapper接口识别，将mapper交给spring容器管理-->
+    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.how2j.tmall.mapper"/>
+    </bean>
+
+    <!-- 配置Spring框架 声明式事务管理 -->
+    <!-- 配置事务管理器对象 -->
+<!--    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">-->
+<!--        <property name="dataSource" ref="dataSource"/>-->
+<!--    </bean>-->
+<!--    &lt;!&ndash; 配置事务通知 &ndash;&gt;-->
+<!--    <tx:advice id="txAdvice" transaction-manager="transactionManager">-->
+<!--        <tx:attributes>-->
+<!--            &lt;!&ndash;            <tx:method name="update*" propagation="REQUIRES_NEW" rollback-for="Exception" />&ndash;&gt;-->
+<!--            &lt;!&ndash;            <tx:method name="delete*" propagation="REQUIRES_NEW" />&ndash;&gt;-->
+<!--            <tx:method name="find*" read-only="true" propagation="SUPPORTS"/>-->
+<!--            <tx:method name="*" isolation="DEFAULT" />-->
+<!--        </tx:attributes>-->
+<!--    </tx:advice>-->
+<!--    &lt;!&ndash; 配置AOP增强 &ndash;&gt;-->
+<!--    <aop:config>-->
+<!--        <aop:advisor advice-ref="txAdvice" pointcut="execution(public * com.stair.service.impl.*ServiceImpl.*(..))"/>-->
+<!--    </aop:config>-->
+
+    <context:annotation-config />
+</beans>

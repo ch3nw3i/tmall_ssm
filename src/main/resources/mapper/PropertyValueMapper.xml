@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.how2j.tmall.mapper.PropertyValueMapper">
+
+    <resultMap id="propertyValueMap" type="PropertyValue">
+        <id column="id" property="id"/>
+        <result column="pid" property="pid"/>
+        <result column="ptid" property="ptid"/>
+        <result column="value" property="value"/>
+        <collection property="property" ofType="Property">
+            <id column="id" property="id"/>
+            <result column="cid" property="cid"/>
+            <result column="name" property="name"/>
+        </collection>
+    </resultMap>
+
+    <select id="list" parameterType="Integer" resultMap="propertyValueMap">
+        select pv.id, pv.pid, pv.ptid, pv.value,
+               p.id, p.cid, p.name
+        from propertyvalue pv
+        left join property p on pv.ptid = p.id
+        where pv.pid = #{pid}
+        order by pv.id asc
+    </select>
+
+    <insert id="add" parameterType="PropertyValue" useGeneratedKeys="true" keyProperty="id">
+        insert into propertyvalue(pid, ptid) values( #{pid}, #{ptid} )
+    </insert>
+
+    <update id="update" parameterType="PropertyValue">
+        update propertyvalue set pid = #{pid}, ptid = #{ptid}, value = #{value}
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        delete from propertyvalue where ptid = #{ptid}
+    </delete>
+</mapper>

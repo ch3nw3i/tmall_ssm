@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.how2j.tmall.mapper.ProductImageMapper">
+
+    <select id="getFirstProductImage" parameterType="Integer" resultType="ProductImage">
+        select id, pid, type from productimage where pid = #{pid} order by id asc limit 1
+    </select>
+
+    <select id="listProductImages" resultType="ProductImage">
+        select id, pid, type from productimage where pid = #{pid} order by id desc;
+    </select>
+
+    <select id="list" parameterType="Integer" resultType="ProductImage">
+        select id, pid, type from productimage where pid = #{pid} order by id asc
+    </select>
+    
+    <select id="get" parameterType="Integer" resultType="ProductImage">
+        select id, pid, type from productimage where id = #{id}
+    </select>
+    
+    <insert id="add" parameterType="ProductImage" useGeneratedKeys="true" keyProperty="id">
+        insert into productimage(pid, type ) values (#{pid}, #{type})
+    </insert>
+
+    <delete id="delete" parameterType="Integer">
+        delete from productimage where id = #{id}
+    </delete>
+</mapper>

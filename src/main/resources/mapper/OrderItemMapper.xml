@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.how2j.tmall.mapper.OrderItemMapper">
+
+    <resultMap id="orderItemMap" type="OrderItem">
+        <id column="id" property="id"/>
+        <result column="oid" property="oid"/>
+        <result column="pid" property="pid"/>
+        <result column="uid" property="uid"/>
+        <result column="number" property="number"/>
+        <collection property="product" ofType="Product">
+            <id column="pid" property="id"/>
+            <result column="name" property="name"/>
+            <result column="stock" property="stock"/>
+            <result column="originalPrice" property="originalPrice"/>
+            <result column="promotePrice" property="promotePrice"/>
+            <association property="firstProductImage" javaType="ProductImage">
+                <id column="id" property="id"/>
+                <result column="pid" property="pid"/>
+                <result column="type" property="type"/>
+            </association>
+        </collection>
+    </resultMap>
+
+    <select id="list" parameterType="OrderItem" resultMap="orderItemMap">
+        select oi.id, oi.pid, oi.oid, oi.uid, oi.number,
+               p.id as pid, p.name, p.promotePrice
+        from orderitem oi
+        left join product p on oi.pid = p.id
+        where uid = #{uid} and oid = #{oid}
+    </select>
+
+    <select id="listByUid" parameterType="Integer" resultMap="orderItemMap">
+        select oi.id, oi.oid, oi.pid, oi.uid, oi.number,
+               p.id, p.name, p.stock, p.originalPrice, p.promotePrice
+        from orderitem oi
+        left join product p on oi.pid = p.id
+        where oi.uid = #{uid}
+    </select>
+
+    <select id="count" parameterType="Integer" resultType="Integer">
+        select count(*) from orderitem where pid = #{pid}
+    </select>
+
+    <select id="get" parameterType="Integer" resultMap="orderItemMap">
+        select oi.id, oi.pid, oi.oid, oi.uid, oi.number,
+               p.id as pid, p.name, p.promotePrice,
+               pi.id, pi.pid, pi.type
+        from orderitem oi
+        left join product p on oi.pid = p.id
+        left join productimage pi on p.id = pi.pid
+        where oi.id = #{id}
+    </select>
+
+    <select id="listByOid" parameterType="Integer" resultMap="orderItemMap">
+        select oi.id, oi.pid, oi.oid, oi.uid, oi.number,
+               p.id as pid, p.name, p.promotePrice
+        from orderitem oi
+                 left join product p on oi.pid = p.id
+        where oi.oid = #{oid}
+    </select>
+
+    <insert id="insert" parameterType="OrderItem" keyProperty="id" useGeneratedKeys="true">
+        insert into orderitem (pid, oid, uid, number) values ( #{pid}, #{oid}, #{uid}, #{number} )
+    </insert>
+</mapper>

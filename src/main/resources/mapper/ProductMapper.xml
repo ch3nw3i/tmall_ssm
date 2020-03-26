@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.how2j.tmall.mapper.ProductMapper">
+
+    <resultMap id="productMap" type="Product">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="subTitle" property="subTitle"/>
+        <result column="originalPrice" property="originalPrice"/>
+        <result column="promotePrice" property="promotePrice"/>
+        <result column="stock" property="stock"/>
+        <result column="cid" property="cid"/>
+        <result column="createDate" property="createDate"/>
+
+        <association property="category" javaType="com.how2j.tmall.pojo.Category">
+            <id column="cate_id" property="id"/>
+            <result column="cate_name" property="name"/>
+        </association>
+    </resultMap>
+
+    <select id="listAll" resultType="Product">
+        select id, name, subTitle, originalPrice, promotePrice, stock, cid, createDate from product order by id asc
+    </select>
+
+    <select id="list" parameterType="Integer" resultType="com.how2j.tmall.pojo.Product">
+        select id, name, subTitle, originalPrice, promotePrice, stock
+        from product where cid = #{cid} order by id asc
+        <if test="page.start!=null and page.count!=null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <select id="listByCid" parameterType="Integer" resultType="Product">
+        select id, name, subTitle, originalPrice, promotePrice, stock
+        from product where cid = #{cid} order by id asc
+    </select>
+
+    <select id="total" parameterType="Integer" resultType="Integer">
+        select count(*) from product where cid = #{cid}
+    </select>
+
+    <insert id="add" parameterType="Product" useGeneratedKeys="true" keyProperty="id">
+        insert into product ( name, subTitle, originalPrice, promotePrice, stock, cid, createDate)
+        values ( #{name}, #{subTitle}, #{originalPrice},
+                 #{promotePrice}, #{stock}, #{cid}, #{createDate} )
+    </insert>
+
+    <delete id="delete" parameterType="Integer">
+        delete from product where id = #{id}
+    </delete>
+
+    <select id="get" parameterType="Integer" resultMap="productMap">
+        select p.id, p.name, p.subTitle, p.originalPrice, p.promotePrice, p.stock, p.cid, p.createDate,
+               c.id as cate_id, c.name as cate_name
+        from product p left join category c on p.cid = c.id
+        where p.id = #{pid}
+    </select>
+
+    <update id="update" parameterType="Product">
+        update product set  name = #{name}, subTitle = #{subTitle}, originalPrice = #{originalPrice},
+                           promotePrice = #{promotePrice}, stock = #{stock}, cid = #{cid}
+                           where id = #{id}
+    </update>
+</mapper>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.how2j.tmall.mapper.OrderMapper">
+
+    <resultMap id="orderMap" type="com.how2j.tmall.pojo.Order">
+        <id column="id" property="id"/>
+        <result column="orderCode" property="orderCode"/>
+        <result column="address" property="address"/>
+        <result column="post" property="post"/>
+        <result column="receiver" property="receiver"/>
+        <result column="mobile" property="mobile"/>
+        <result column="userMessage" property="userMessage"/>
+        <result column="createDate" property="createDate"/>
+        <result column="payDate" property="payDate"/>
+        <result column="deliveryDate" property="deliveryDate"/>
+        <result column="confirmDate" property="confirmDate"/>
+        <result column="userid" property="uid"/>
+        <result column="status" property="status"/>
+        <result column="totalPrice" property="totalPrice"/>
+        <result column="totalNumber" property="totalNumber"/>
+
+        <association property="user" javaType="User">
+            <id column="userid" property="id"/>
+            <result column="name" property="name"/>
+        </association>
+    </resultMap>
+    
+    <select id="list" resultMap="orderMap">
+        select o.id, o.totalPrice, o.totalNumber, o.uid,
+               o.createDate, o.payDate, o.deliveryDate, o.confirmDate, o.status,
+               u.id as userid, u.name
+        from `order` o
+        left join user u on o.uid=u.id
+        order by o.id asc
+        <if test="start!=null and count!=null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <select id="total" resultType="Integer">
+        select count(*) from `order`
+    </select>
+
+    <select id="listByUid" parameterType="Integer" resultMap="orderMap">
+        select o.id, o.ordercode, o.address, o.totalPrice, o.totalNumber, o.uid,
+               o.createDate, o.payDate, o.deliveryDate, o.confirmDate, o.status,
+               u.id as userid, u.name
+        from `order` o
+                 left join user u on o.uid=u.id
+        where o.uid = #{uid}
+        order by o.id asc
+    </select>
+
+    <insert id="insert" parameterType="Order" keyProperty="id" useGeneratedKeys="true">
+        insert into `order` (orderCode, address, post, receiver, mobile, userMessage,
+                             createDate, payDate, deliveryDate, confirmDate,
+                             uid, status, totalPrice, totalNumber)
+        values ( #{orderCode}, #{address}, #{post}, #{receiver}, #{mobile}, #{userMessage},
+                #{createDate}, #{payDate}, #{deliveryDate}, #{confirmDate},
+                #{uid}, #{status}, #{totalPrice}, #{totalNumber} )
+    </insert>
+
+    <update id="pay" parameterType="Integer">
+        update `order` set status = 'waitDelivery' where id = #{id}
+    </update>
+
+    <update id="delivery" parameterType="Integer">
+        update `order` set status = 'waitConfirm' where id = #{id}
+    </update>
+
+    <select id="getLastOrderCode" resultType="String">
+        select orderCode from `order` order by id desc limit 1
+    </select>
+
+    <update id="confirmPay" parameterType="Integer">
+        update 'order' set status = 'waitReview' where id = #{id}
+    </update>
+
+    <select id="getLastOid" resultType="Integer">
+        select id from `order` order by id desc limit 1
+    </select>
+
+    <update id="payed" parameterType="Order">
+
+    </update>
+
+    <select id="selectById" parameterType="Integer" resultType="Order">
+        select * from `order` where id = #{id}
+    </select>
+</mapper>
