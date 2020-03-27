@@ -31,14 +31,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public User login(User user) {
         User resultUser = userMapper.getUser(user.getName());
-        if (resultUser.getPassword().equals(user.getPassword())) {
-            return resultUser;
+        if (resultUser != null) {
+            if (resultUser.getPassword().equals(user.getPassword())) {
+                return resultUser;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
         }
-        return null;
     }
 
-    @Override
-    public Integer add(User user) {
-        return userMapper.add(user);
+        @Override
+        public Integer add (User user){
+            return userMapper.add(user);
+        }
     }
-}

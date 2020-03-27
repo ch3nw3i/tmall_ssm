@@ -30,15 +30,17 @@ public class UserController {
     @RequestMapping("forelogin")
     public String foreLogin(User user, Model model, HttpSession session) {
         User u = userService.login(user);
-        if (!u.equals(null)) {
+        if (u != null) {
             Integer cartNum = cartService.getCartNumByUid(u.getId());
             model.addAttribute("user", u);
 
             session.setAttribute("user", u);
             session.setAttribute("cartTotalItemNumber", cartNum);
             return "redirect:/forehome";
+        } else {
+            session.setAttribute("msg", "用户名或密码错误");
+            return "/fore/login";
         }
-        return "/fore/login";
     }
 
     @RequestMapping("forelogout")
