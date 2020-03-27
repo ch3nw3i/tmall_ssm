@@ -2,6 +2,7 @@ package com.how2j.tmall.controller;
 
 import com.how2j.tmall.pojo.*;
 import com.how2j.tmall.service.*;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -74,5 +75,18 @@ public class ProductController {
         List<Product> searchResults = productService.search(keyword);
         model.addAttribute("ps", searchResults);
         return "/fore/searchResult";
+    }
+
+    @RequestMapping("forecategory")
+    public String foreCategory(@Param("cid") Integer cid, Model model, HttpSession session) {
+        Category category = categoryService.get(cid);
+        List<Product> productList = productService.list(cid);
+        category.setProducts(productList);
+        Integer categorycount = productService.total(cid);
+        model.addAttribute("c", category);
+        // 排序未实现
+        session.setAttribute("sort", "");
+        session.setAttribute("categorycount", categorycount);
+        return "/fore/category";
     }
 }
