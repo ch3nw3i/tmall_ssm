@@ -56,4 +56,6 @@ public interface ProductService {
      */
     Integer total(Integer cid);
 
+    List<Product> search(String keyword);
+
 }

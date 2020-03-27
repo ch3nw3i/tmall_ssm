@@ -63,4 +63,10 @@
                            promotePrice = #{promotePrice}, stock = #{stock}, cid = #{cid}
                            where id = #{id}
     </update>
+
+    <select id="listByNameKeyword" parameterType="String" resultType="product">
+        select p.id, p.promotePrice, p.name
+        from product as p
+        where name like concat('%', #{keyword}, '%')
+    </select>
 </mapper>

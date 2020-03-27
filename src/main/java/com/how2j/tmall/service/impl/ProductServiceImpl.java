@@ -73,4 +73,16 @@ public class ProductServiceImpl implements ProductService {
     public Integer total(Integer cid) {
         return productMapper.total(cid);
     }
+
+    @Override
+    public List<Product> search(String keyword) {
+        List<Product> productList = productMapper.listByNameKeyword(keyword);
+        for (Product p : productList) {
+            p.setSaleCount(orderItemService.countSaleLastMonth(p.getId()));
+            p.setReviewCount(reviewService.count(p.getId()));
+            p.setFirstProductImage(productImageService.getFirstProductImage(p.getId()));
+        }
+        return productList;
+
+    }
 }

@@ -65,4 +65,10 @@
     <insert id="insert" parameterType="OrderItem" keyProperty="id" useGeneratedKeys="true">
         insert into orderitem (pid, oid, uid, number) values ( #{pid}, #{oid}, #{uid}, #{number} )
     </insert>
+
+    <select id="countSaleLastMonth" parameterType="Integer" resultType="Integer">
+        select count(id) from orderitem
+        where pid = #{pid}
+
+    </select>
 </mapper>

@@ -66,4 +66,9 @@ public class OrderItemServiceImpl implements OrderItemService {
             orderItemMapper.insert(oi);
         }
     }
+
+    @Override
+    public Integer countSaleLastMonth(Integer pid) {
+        return orderItemMapper.countSaleLastMonth(pid);
+    }
 }

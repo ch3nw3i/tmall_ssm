@@ -47,4 +47,6 @@ public interface OrderItemService {
     void insert(OrderItem orderItem);
 
     void insert(List<OrderItem> orderItemList);
+
+    Integer countSaleLastMonth(Integer pid);
 }

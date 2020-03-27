@@ -63,6 +63,8 @@ public interface ProductMapper {
      */
     void update(Product product);
 
+    List<Product> listByNameKeyword(String keyword);
+
 
 
 }

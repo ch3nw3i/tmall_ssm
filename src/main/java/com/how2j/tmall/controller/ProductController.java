@@ -69,5 +69,10 @@ public class ProductController {
         return "/fore/product";
     }
 
-
+    @RequestMapping("foresearch")
+    public String foreSearch(String keyword, Model model) {
+        List<Product> searchResults = productService.search(keyword);
+        model.addAttribute("ps", searchResults);
+        return "/fore/searchResult";
+    }
 }

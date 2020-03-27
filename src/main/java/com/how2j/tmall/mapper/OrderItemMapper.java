@@ -45,4 +45,6 @@ public interface OrderItemMapper {
     List<OrderItem> listByOid(Integer oid);
 
     void insert(OrderItem orderItem);
+
+    Integer countSaleLastMonth(Integer pid);
 }
