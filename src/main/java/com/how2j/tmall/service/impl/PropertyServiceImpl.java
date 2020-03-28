@@ -23,19 +23,19 @@ public class PropertyServiceImpl implements PropertyService {
     private PropertyValueService propertyValueService;
 
     @Override
-    public List<Property> list(Integer cid, Page page) {
-        return propertyMapper.list(cid, page);
-    }
-
-    @Override
     public List<Property> list(Integer cid) {
-        return propertyMapper.listByCid(cid);
+        return propertyMapper.list(cid);
     }
 
-    @Override
-    public Integer total(Integer cid) {
-        return propertyMapper.total(cid);
-    }
+//    @Override
+//    public List<Property> list(Integer cid) {
+//        return propertyMapper.listByCid(cid);
+//    }
+
+//    @Override
+//    public Integer total(Integer cid) {
+//        return propertyMapper.total(cid);
+//    }
 
     @Override
     public Property get(Integer id) {

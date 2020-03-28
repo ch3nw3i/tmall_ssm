@@ -23,10 +23,10 @@ public class UserServiceImpl implements UserService {
         return userMapper.list(page);
     }
 
-    @Override
-    public Integer total() {
-        return userMapper.total();
-    }
+//    @Override
+//    public Integer total() {
+//        return userMapper.total();
+//    }
 
     @Override
     public User login(User user) {

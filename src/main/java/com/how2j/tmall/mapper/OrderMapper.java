@@ -11,16 +11,15 @@ import java.util.List;
 public interface OrderMapper {
     /**
      *
-     * @param page
      * @return
      */
-    List<Order> list(Page page);
+    List<Order> list();
 
-    /**
-     *
-     * @return
-     */
-    Integer total();
+//    /**
+//     *
+//     * @return
+//     */
+//    Integer total();
 
     /**
      *

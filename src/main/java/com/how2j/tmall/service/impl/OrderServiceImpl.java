@@ -26,12 +26,11 @@ public class OrderServiceImpl implements OrderService {
 
     /**
      *
-     * @param page
      * @return
      */
     @Override
-    public List<Order> list(Page page) {
-        List<Order> orderList = orderMapper.list(page);
+    public List<Order> list() {
+        List<Order> orderList = orderMapper.list();
         for (Order order : orderList) {
             List<OrderItem> orderItemList = orderItemService.listByOid(order.getId());
             order.setOrderItems(orderItemList);
@@ -39,10 +38,10 @@ public class OrderServiceImpl implements OrderService {
         return orderList;
     }
 
-    @Override
-    public Integer total() {
-        return orderMapper.total();
-    }
+//    @Override
+//    public Integer total() {
+//        return orderMapper.total();
+//    }
 
     @Override
     public void delivery(Integer id) {

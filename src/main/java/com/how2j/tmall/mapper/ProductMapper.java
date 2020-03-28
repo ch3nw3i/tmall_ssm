@@ -13,23 +13,23 @@ public interface ProductMapper {
     /**
      *
      * @param cid
-     * @param page
      * @return
      */
-    List<Product> list(@Param("cid") Integer cid, @Param("page") Page page);
+    List<Product> list(Integer cid);
+//    List<Product> list(@Param("cid") Integer cid, @Param("page") Page page);
 
-    /**
-     *
-     * @return
-     */
-    List<Product> listAll();
+//    /**
+//     *
+//     * @return
+//     */
+//    List<Product> listAll();
 
-    /**
-     *
-     * @param cid
-     * @return
-     */
-    List<Product> listByCid(Integer cid);
+//    /**
+//     *
+//     * @param cid
+//     * @return
+//     */
+//    List<Product> listByCid(Integer cid);
 
     /**
      *

@@ -17,11 +17,11 @@ public interface UserMapper {
      */
     List<User> list(@Param("page") Page page);
 
-    /**
-     *
-     * @return
-     */
-    Integer total();
+//    /**
+//     *
+//     * @return
+//     */
+//    Integer total();
 
     /**
      *

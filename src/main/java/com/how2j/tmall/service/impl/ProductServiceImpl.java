@@ -53,18 +53,34 @@ public class ProductServiceImpl implements ProductService {
         return product;
     }
 
-    @Override
-    public List<Product> list(Integer cid, Page page) {
-        return productMapper.list(cid, page);
-    }
+//    @Override
+//    public List<Product> list(Integer cid, Page page) {
+//        return productMapper.list(cid, page);
+//    }
 
     @Override
     public List<Product> list(Integer cid) {
-        List<Product> productList = productMapper.listByCid(cid);
+        List<Product> productList = productMapper.list(cid);
         for (Product product: productList) {
             product.setFirstProductImage(productImageService.getFirstProductImage(product.getId()));
-            product.setReviewCount(reviewService.count(product.getId()));
-            product.setSaleCount(orderItemService.count(product.getId()));
+            product.setReviewCount(reviewService.total(product.getId()));
+            product.setSaleCount(orderItemService.total(product.getId()));
+        }
+        return productList;
+    }
+
+//    @Override
+//    public Integer total(Integer cid) {
+//        return productMapper.total(cid);
+//    }
+
+    @Override
+    public List<Product> search(String keyword) {
+        List<Product> productList = productMapper.listByNameKeyword(keyword);
+        for (Product p : productList) {
+            p.setSaleCount(orderItemService.countSaleLastMonth(p.getId()));
+            p.setReviewCount(reviewService.total(p.getId()));
+            p.setFirstProductImage(productImageService.getFirstProductImage(p.getId()));
         }
         return productList;
     }
@@ -72,17 +88,5 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Integer total(Integer cid) {
         return productMapper.total(cid);
-    }
-
-    @Override
-    public List<Product> search(String keyword) {
-        List<Product> productList = productMapper.listByNameKeyword(keyword);
-        for (Product p : productList) {
-            p.setSaleCount(orderItemService.countSaleLastMonth(p.getId()));
-            p.setReviewCount(reviewService.count(p.getId()));
-            p.setFirstProductImage(productImageService.getFirstProductImage(p.getId()));
-        }
-        return productList;
-
     }
 }

@@ -28,14 +28,7 @@ public interface OrderItemMapper {
      * @param pid
      * @return
      */
-    Integer count(Integer pid);
-
-    /**
-     *
-     * @param id
-     * @return
-     */
-    OrderItem get(Integer id);
+    Integer total(Integer pid);
 
     /**
      *

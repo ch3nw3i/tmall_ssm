@@ -20,5 +20,5 @@ public interface ReviewService {
      * @param pid
      * @return
      */
-    Integer count(Integer pid);
+    Integer total(Integer pid);
 }

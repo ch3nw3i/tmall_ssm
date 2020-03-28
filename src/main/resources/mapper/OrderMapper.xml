@@ -34,13 +34,6 @@
         from `order` o
         left join user u on o.uid=u.id
         order by o.id asc
-        <if test="start!=null and count!=null">
-            limit #{start}, #{count}
-        </if>
-    </select>
-
-    <select id="total" resultType="Integer">
-        select count(*) from `order`
     </select>
 
     <select id="listByUid" parameterType="Integer" resultMap="orderMap">

@@ -13,24 +13,23 @@ public interface PropertyMapper {
     /**
      *
      * @param cid
-     * @param page
      * @return
      */
-    List<Property> list(@Param("cid") Integer cid, @Param("page") Page page);
+    List<Property> list(@Param("cid") Integer cid);
 
-    /**
-     *
-     * @param cid
-     * @return
-     */
-    List<Property> listByCid(Integer cid);
+//    /**
+//     *
+//     * @param cid
+//     * @return
+//     */
+//    List<Property> listByCid(Integer cid);
 
-    /**
-     *
-     * @param cid
-     * @return
-     */
-    Integer total(Integer cid);
+//    /**
+//     *
+//     * @param cid
+//     * @return
+//     */
+//    Integer total(Integer cid);
 
     /**
      *

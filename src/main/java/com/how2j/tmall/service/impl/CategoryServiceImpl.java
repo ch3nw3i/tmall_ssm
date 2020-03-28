@@ -32,15 +32,22 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private ProductService productService;
 
-    @Override
-    public List<Category> list(Page page) {
-        List<Category> list = categoryMapper.list(page);
-        return list;
-    }
+//    @Override
+//    public List<Category> list(Page page) {
+//        List<Category> list = categoryMapper.list(page);
+//        return list;
+//    }
+
+//    @Override
+//    public List<Category> list() {
+//        return categoryMapper.list();
+//    }
+
+
 
     @Override
-    public List<Category> listAll() {
-        List<Category> list = categoryMapper.listAll();
+    public List<Category> list() {
+        List<Category> list = categoryMapper.list();
         for (Category category : list) {
             List<Product> productList = productService.list(category.getId());
 
@@ -65,10 +72,10 @@ public class CategoryServiceImpl implements CategoryService {
         return list;
     }
 
-    @Override
-    public Integer total() {
-        return categoryMapper.total();
-    }
+//    @Override
+//    public Integer total() {
+//        return categoryMapper.total();
+//    }
 
     @Override
     public void add(Category category, HttpSession session, UploadedImageFile uploadedImageFile)  throws IOException {

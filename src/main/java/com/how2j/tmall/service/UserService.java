@@ -16,11 +16,11 @@ public interface UserService {
      */
     List<User> list(Page page);
 
-    /**
-     *
-     * @return
-     */
-    Integer total();
+//    /**
+//     *
+//     * @return
+//     */
+//    Integer total();
 
     /**
      *

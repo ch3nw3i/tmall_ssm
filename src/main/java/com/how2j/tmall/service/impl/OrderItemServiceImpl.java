@@ -36,14 +36,14 @@ public class OrderItemServiceImpl implements OrderItemService {
     }
 
     @Override
-    public Integer count(Integer pid) {
-        return orderItemMapper.count(pid);
+    public Integer total(Integer pid) {
+        return orderItemMapper.total(pid);
     }
 
-    @Override
-    public OrderItem get(Integer id) {
-        return orderItemMapper.get(id);
-    }
+//    @Override
+//    public OrderItem get(Integer id) {
+//        return orderItemMapper.get(id);
+//    }
 
     @Override
     public List<OrderItem> listByOid(Integer oid) {
