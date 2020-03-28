@@ -131,10 +131,10 @@ public class AdminController {
         List<Product> productList = productService.list(cid);
         int total = (int) new PageInfo<>(productList).getTotal();
         page.setTotal(total);
-        for (Product product : productList) {
-            ProductImage fpi = productImageService.getFirstProductImage(product.getId());
-            product.setFirstProductImage(fpi);
-        }
+//        for (Product product : productList) {
+//            ProductImage fpi = productImageService.getFirstProductImage(product.getId());
+//            product.setFirstProductImage(fpi);
+//        }
         Category category = categoryService.get(cid);
         model.addAttribute("c", category);
         model.addAttribute("ps", productList);
