@@ -38,11 +38,6 @@ public class OrderServiceImpl implements OrderService {
         return orderList;
     }
 
-//    @Override
-//    public Integer total() {
-//        return orderMapper.total();
-//    }
-
     @Override
     public void delivery(Integer id) {
         orderMapper.delivery(id);

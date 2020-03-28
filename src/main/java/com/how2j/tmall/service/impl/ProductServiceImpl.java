@@ -53,11 +53,6 @@ public class ProductServiceImpl implements ProductService {
         return product;
     }
 
-//    @Override
-//    public List<Product> list(Integer cid, Page page) {
-//        return productMapper.list(cid, page);
-//    }
-
     @Override
     public List<Product> list(Integer cid) {
         List<Product> productList = productMapper.list(cid);
@@ -68,11 +63,6 @@ public class ProductServiceImpl implements ProductService {
         }
         return productList;
     }
-
-//    @Override
-//    public Integer total(Integer cid) {
-//        return productMapper.total(cid);
-//    }
 
     @Override
     public List<Product> search(String keyword) {

@@ -11,16 +11,9 @@ import java.util.List;
 public interface UserService {
     /**
      *
-     * @param page
      * @return
      */
-    List<User> list(Page page);
-
-//    /**
-//     *
-//     * @return
-//     */
-//    Integer total();
+    List<User> list();
 
     /**
      *

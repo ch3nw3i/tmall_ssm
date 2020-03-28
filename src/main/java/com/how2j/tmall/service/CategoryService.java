@@ -13,26 +13,8 @@ import java.util.List;
  * @author chen
  */
 public interface CategoryService {
-//    /**
-//     * 分页查询category
-//     * @param page
-//     * @return category列表
-//     */
-//    List<Category> list(Page page);
 
     List<Category> list();
-
-//    /**
-//     * 查询所有category
-//     * @return
-//     */
-//    List<Category> listAll();
-
-//    /**
-//     * 获得分类表的总记录条数
-//     * @return
-//     */
-//    Integer total();
 
     /**
      * 新增商品分类

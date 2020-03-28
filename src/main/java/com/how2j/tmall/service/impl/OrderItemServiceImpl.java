@@ -40,11 +40,6 @@ public class OrderItemServiceImpl implements OrderItemService {
         return orderItemMapper.total(pid);
     }
 
-//    @Override
-//    public OrderItem get(Integer id) {
-//        return orderItemMapper.get(id);
-//    }
-
     @Override
     public List<OrderItem> listByOid(Integer oid) {
         List<OrderItem> orderItemList = orderItemMapper.listByOid(oid);

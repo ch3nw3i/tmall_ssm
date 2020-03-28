@@ -16,20 +16,6 @@ public interface ProductMapper {
      * @return
      */
     List<Product> list(Integer cid);
-//    List<Product> list(@Param("cid") Integer cid, @Param("page") Page page);
-
-//    /**
-//     *
-//     * @return
-//     */
-//    List<Product> listAll();
-
-//    /**
-//     *
-//     * @param cid
-//     * @return
-//     */
-//    List<Product> listByCid(Integer cid);
 
     /**
      *

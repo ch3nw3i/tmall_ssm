@@ -138,15 +138,16 @@ public class AdminController {
         Category category = categoryService.get(cid);
         model.addAttribute("c", category);
         model.addAttribute("ps", productList);
+        model.addAttribute("page", page);
         return "admin/listProduct";
     }
 
     @RequestMapping("admin_product_add")
-    public String adminProductAdd(Product product, Page page) {
+    public String adminProductAdd(Product product) {
         productService.add(product);
         List<Product> productList = productService.list(product.getCid());
-        int total = (int) new PageInfo<>(productList).getTotal();
-        page.setTotal(total);
+//        int total = (int) new PageInfo<>(productList).getTotal();
+//        page.setTotal(total);
 
         return "redirect:/admin_product_list?cid=" + product.getCid();
     }
@@ -174,10 +175,7 @@ public class AdminController {
         return "redirect:/admin_product_list?cid=" + product.getCid();
     }
 
-
     // ----------------属性值--------------------------------------
-
-
     @RequestMapping("admin_propertyValue_edit")
     public String adminPropertyValueEdit(@Param("pid") Integer pid, Model model) {
         List<PropertyValue> propertyValueList =  propertyValueService.list(pid);
@@ -251,12 +249,12 @@ public class AdminController {
 
 
     // ----------------用户---------------------------------------
-
     @RequestMapping("admin_user_list")
     public String adminUserList(Model model, Page page) {
         PageHelper.offsetPage(page.getStart(), page.getCount());
-        List<User> userList = userService.list(page);
+        List<User> userList = userService.list();
         int total = (int) new PageInfo<>(userList).getTotal();
+        page.setTotal(total);
         model.addAttribute("page", page);
         model.addAttribute("us", userList);
         return "admin/listUser";
@@ -264,7 +262,6 @@ public class AdminController {
 
 
     // ----------------订单---------------------------------------
-
     @RequestMapping("admin_order_list")
     public String adminOrderList(Model model, Page page) {
         PageHelper.offsetPage(page.getStart(), page.getCount());

@@ -27,16 +27,6 @@ public class PropertyServiceImpl implements PropertyService {
         return propertyMapper.list(cid);
     }
 
-//    @Override
-//    public List<Property> list(Integer cid) {
-//        return propertyMapper.listByCid(cid);
-//    }
-
-//    @Override
-//    public Integer total(Integer cid) {
-//        return propertyMapper.total(cid);
-//    }
-
     @Override
     public Property get(Integer id) {
         return propertyMapper.get(id);

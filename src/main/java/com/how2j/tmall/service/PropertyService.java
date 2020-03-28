@@ -9,13 +9,6 @@ import java.util.List;
  * @author chen
  */
 public interface PropertyService {
-//    /**
-//     *
-//     * @param cid
-//     * @param page
-//     * @return
-//     */
-//    List<Property> list(Integer cid, Page page);
 
     /**
      *
@@ -24,12 +17,6 @@ public interface PropertyService {
      */
     List<Property> list(Integer cid);
 
-//    /**
-//     *
-//     * @param cid
-//     * @return
-//     */
-//    Integer total(Integer cid);
 
     /**
      *

@@ -16,12 +16,6 @@ public interface OrderService {
      */
     List<Order> list();
 
-//    /**
-//     *
-//     * @return
-//     */
-//    Integer total();
-
     /**
      *
      * @param id

@@ -34,14 +34,6 @@ public interface ProductService {
      */
     Product get(Integer id);
 
-//    /**
-//     *
-//     * @param cid
-//     * @param page
-//     * @return
-//     */
-//    List<Product> list(Integer cid, Page page);
-
     /**
      *
      * @param cid

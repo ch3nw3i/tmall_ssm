@@ -15,12 +15,6 @@ public interface OrderMapper {
      */
     List<Order> list();
 
-//    /**
-//     *
-//     * @return
-//     */
-//    Integer total();
-
     /**
      *
      * @param id

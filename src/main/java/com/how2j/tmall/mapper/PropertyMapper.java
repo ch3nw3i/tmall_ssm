@@ -17,20 +17,6 @@ public interface PropertyMapper {
      */
     List<Property> list(@Param("cid") Integer cid);
 
-//    /**
-//     *
-//     * @param cid
-//     * @return
-//     */
-//    List<Property> listByCid(Integer cid);
-
-//    /**
-//     *
-//     * @param cid
-//     * @return
-//     */
-//    Integer total(Integer cid);
-
     /**
      *
      * @param id

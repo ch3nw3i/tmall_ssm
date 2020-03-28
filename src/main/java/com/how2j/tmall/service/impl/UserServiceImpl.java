@@ -19,14 +19,10 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public List<User> list(Page page) {
-        return userMapper.list(page);
+    public List<User> list() {
+        return userMapper.list();
     }
 
-//    @Override
-//    public Integer total() {
-//        return userMapper.total();
-//    }
 
     @Override
     public User login(User user) {
