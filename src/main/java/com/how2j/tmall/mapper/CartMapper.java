@@ -28,4 +28,6 @@ public interface CartMapper {
     void update(Cart cart);
 
     void deleteById(Integer id);
+
+    Cart selectById(Integer id);
 }

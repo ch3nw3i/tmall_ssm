@@ -23,11 +23,9 @@
     </resultMap>
     <select id="selectByUid" parameterType="Integer" resultMap="cartMap">
         select c.id, c.pid, c.uid, c.number,
-               p.id as productid , p.name, p.stock, p.originalPrice, p.promotePrice,
-               pi.id as piid, pi.pid, pi.type
+               p.id as productid , p.name, p.stock, p.originalPrice, p.promotePrice
         from cart c
         left join product p on c.pid = p.id
-        left join productimage pi on p.id = pi.pid
         where c.uid = #{uid}
     </select>
 
@@ -46,4 +44,12 @@
     <delete id="deleteById" parameterType="Integer">
         delete from cart where id = #{id}
     </delete>
+
+    <select id="selectById" parameterType="Integer" resultMap="cartMap">
+        select c.id, c.pid, c.uid, c.number,
+                p.id as productid , p.name, p.stock, p.originalPrice, p.promotePrice
+        from cart c
+                left join product p on c.pid = p.id
+        where c.id = #{id}
+    </select>
 </mapper>

@@ -17,22 +17,32 @@ public interface OrderMapper {
 
     /**
      *
-     * @param id
+     * @param order
      */
-    void delivery(Integer id);
+    void delivery(Order order);
 
     List<Order> listByUid(Integer uid);
 
-    void insert(Order order);
+    Integer insert(Order order);
 
     String getLastOrderCode();
 
-    void confirmPay(Integer id);
+    /**
+     * 确认收货后，订单 status waitConfirm -> waitReview
+     * @param order
+     */
+    void confirmPay(Order order);
 
-    Integer getLastOid();
+//    Integer getLastOid();
 
+    /**
+     * 支付成功后，订单status waitPay -> waitDelivery
+     * @param order
+     */
     void payed(Order order);
 
     Order selectById(Integer id);
+
+    Integer delete(Integer id);
 
 }

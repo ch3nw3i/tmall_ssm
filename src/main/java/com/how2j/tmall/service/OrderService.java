@@ -30,9 +30,11 @@ public interface OrderService {
 
     void confirmPay(Integer id);
 
-    Integer getLastOid();
+//    Integer getLastOid();
 
     void payed(Integer id);
 
     Order getById(Integer id);
+
+    Integer delete(Integer id);
 }

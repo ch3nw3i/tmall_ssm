@@ -2,7 +2,9 @@ package com.how2j.tmall.service.impl;
 
 import com.how2j.tmall.mapper.CartMapper;
 import com.how2j.tmall.pojo.Cart;
+import com.how2j.tmall.pojo.ProductImage;
 import com.how2j.tmall.service.CartService;
+import com.how2j.tmall.service.ProductImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +18,17 @@ public class CartServiceImpl implements CartService {
 
     @Autowired
     private CartMapper cartMapper;
+    @Autowired
+    private ProductImageService productImageService;
+
     @Override
     public List<Cart> listByUid(Integer uid) {
-        return cartMapper.selectByUid(uid);
+        List<Cart> cartList = cartMapper.selectByUid(uid);
+        for (Cart c: cartList) {
+            ProductImage firstProductImage = productImageService.getFirstProductImage(c.getPid());
+            c.getProduct().setFirstProductImage(firstProductImage);
+        }
+        return cartList;
     }
 
     @Override
@@ -60,5 +70,13 @@ public class CartServiceImpl implements CartService {
                 cartMapper.update(cart);
             }
         }
+    }
+
+    @Override
+    public Cart get(Integer id) {
+        Cart cart = cartMapper.selectById(id);
+        ProductImage firstProductImage = productImageService.getFirstProductImage(cart.getPid());
+        cart.getProduct().setFirstProductImage(firstProductImage);
+        return cart;
     }
 }
