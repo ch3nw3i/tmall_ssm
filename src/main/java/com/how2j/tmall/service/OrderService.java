@@ -12,16 +12,9 @@ import java.util.List;
 public interface OrderService {
     /**
      *
-     * @param page
      * @return
      */
-    List<Order> list(Page page);
-
-    /**
-     *
-     * @return
-     */
-    Integer total();
+    List<Order> list();
 
     /**
      *

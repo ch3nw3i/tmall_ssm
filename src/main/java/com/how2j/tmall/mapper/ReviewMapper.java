@@ -20,5 +20,5 @@ public interface ReviewMapper {
      * @param pid
      * @return
      */
-    Integer count(Integer pid);
+    Integer total(Integer pid);
 }

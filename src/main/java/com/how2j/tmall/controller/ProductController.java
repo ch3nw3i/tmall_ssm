@@ -1,5 +1,6 @@
 package com.how2j.tmall.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.how2j.tmall.pojo.*;
 import com.how2j.tmall.service.*;
 import org.apache.ibatis.annotations.Param;
@@ -29,7 +30,7 @@ public class ProductController {
 
     @RequestMapping("forehome")
     public String foreHome(Model model, HttpSession session) {
-        List<Category> categoryList = categoryService.listAll();
+        List<Category> categoryList = categoryService.list();
         for (Category c : categoryList) {
             List<Product> products = productService.list(c.getId());
             c.setProducts(products);
@@ -82,7 +83,7 @@ public class ProductController {
         Category category = categoryService.get(cid);
         List<Product> productList = productService.list(cid);
         category.setProducts(productList);
-        Integer categorycount = productService.total(cid);
+        int categorycount = (int) new PageInfo<>(productList).getTotal();
         model.addAttribute("c", category);
         // 排序未实现
         session.setAttribute("sort", "");

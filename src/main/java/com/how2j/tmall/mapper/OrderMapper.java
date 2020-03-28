@@ -11,16 +11,9 @@ import java.util.List;
 public interface OrderMapper {
     /**
      *
-     * @param page
      * @return
      */
-    List<Order> list(Page page);
-
-    /**
-     *
-     * @return
-     */
-    Integer total();
+    List<Order> list();
 
     /**
      *

@@ -20,20 +20,8 @@
         </association>
     </resultMap>
 
-    <select id="listAll" resultType="Product">
-        select id, name, subTitle, originalPrice, promotePrice, stock, cid, createDate from product order by id asc
-    </select>
-
-    <select id="list" parameterType="Integer" resultType="com.how2j.tmall.pojo.Product">
-        select id, name, subTitle, originalPrice, promotePrice, stock
-        from product where cid = #{cid} order by id asc
-        <if test="page.start!=null and page.count!=null">
-            limit #{page.start}, #{page.count}
-        </if>
-    </select>
-
-    <select id="listByCid" parameterType="Integer" resultType="Product">
-        select id, name, subTitle, originalPrice, promotePrice, stock
+    <select id="list" parameterType="Integer" resultType="Product">
+        select id, name, subTitle, originalPrice, promotePrice, stock, cid, createDate
         from product where cid = #{cid} order by id asc
     </select>
 

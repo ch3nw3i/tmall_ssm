@@ -33,6 +33,8 @@
 
         <servlet-api.version>3.1.0</servlet-api.version>
 
+        <pagehelper.version>5.1.2</pagehelper.version>
+
         <log4j.version>1.2.17</log4j.version>
 
         <commons-logging.version>1.2</commons-logging.version>
@@ -144,12 +146,12 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- pageHelper -->
-        <!--    <dependency>-->
-        <!--      <groupId>com.github.pagehelper</groupId>-->
-        <!--      <artifactId>pagehelper</artifactId>-->
-        <!--      <version>${pagehelper.version}</version>-->
-        <!--    </dependency>-->
+<!--         pageHelper-->
+            <dependency>
+              <groupId>com.github.pagehelper</groupId>
+              <artifactId>pagehelper</artifactId>
+              <version>${pagehelper.version}</version>
+            </dependency>
 
         <!-- 日志 -->
         <dependency>

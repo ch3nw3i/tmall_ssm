@@ -1,5 +1,7 @@
 package com.how2j.tmall.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.how2j.tmall.pojo.*;
 import com.how2j.tmall.service.*;
 import com.how2j.tmall.util.ImageUtil;
@@ -45,8 +47,9 @@ public class AdminController {
 
     @RequestMapping("admin_category_list")
     public String adminCategoryList(Model model, Page page) {
-        List<Category> cs = categoryService.list(page);
-        int total = categoryService.total();
+        PageHelper.offsetPage(page.getStart(), page.getCount());
+        List<Category> cs = categoryService.list();
+        int total = (int) new PageInfo<>(cs).getTotal();
         page.setTotal(total);
         model.addAttribute("cs", cs);
         model.addAttribute("page", page);
@@ -82,9 +85,10 @@ public class AdminController {
 
     @RequestMapping("admin_property_list")
     public String adminPropertyList(@Param("cid") Integer cid, Model model, Page page) {
+        PageHelper.offsetPage(page.getStart(), page.getCount());
         Category category = categoryService.get(cid);
-        List<Property> propertyList = propertyService.list(cid, page);
-        int total = propertyService.total(cid);
+        List<Property> propertyList = propertyService.list(cid);
+        int total = (int) new PageInfo<>(propertyList).getTotal();
         page.setTotal(total);
         model.addAttribute("c", category);
         model.addAttribute("ps", propertyList);
@@ -123,9 +127,10 @@ public class AdminController {
 
     @RequestMapping("admin_product_list")
     public String adminProductList(@Param("cid") Integer cid, Model model, Page page) {
-        Integer total = productService.total(cid);
+        PageHelper.offsetPage(page.getStart(), page.getCount());
+        List<Product> productList = productService.list(cid);
+        int total = (int) new PageInfo<>(productList).getTotal();
         page.setTotal(total);
-        List<Product> productList = productService.list(cid, page);
         for (Product product : productList) {
             ProductImage fpi = productImageService.getFirstProductImage(product.getId());
             product.setFirstProductImage(fpi);
@@ -133,14 +138,16 @@ public class AdminController {
         Category category = categoryService.get(cid);
         model.addAttribute("c", category);
         model.addAttribute("ps", productList);
+        model.addAttribute("page", page);
         return "admin/listProduct";
     }
 
     @RequestMapping("admin_product_add")
-    public String adminProductAdd(Product product, Page page) {
+    public String adminProductAdd(Product product) {
         productService.add(product);
-        Integer total = productService.total(product.getCid());
-        page.setTotal(total);
+        List<Product> productList = productService.list(product.getCid());
+//        int total = (int) new PageInfo<>(productList).getTotal();
+//        page.setTotal(total);
 
         return "redirect:/admin_product_list?cid=" + product.getCid();
     }
@@ -168,10 +175,7 @@ public class AdminController {
         return "redirect:/admin_product_list?cid=" + product.getCid();
     }
 
-
     // ----------------属性值--------------------------------------
-
-
     @RequestMapping("admin_propertyValue_edit")
     public String adminPropertyValueEdit(@Param("pid") Integer pid, Model model) {
         List<PropertyValue> propertyValueList =  propertyValueService.list(pid);
@@ -245,20 +249,26 @@ public class AdminController {
 
 
     // ----------------用户---------------------------------------
-
     @RequestMapping("admin_user_list")
     public String adminUserList(Model model, Page page) {
-        List<User> userList = userService.list(page);
+        PageHelper.offsetPage(page.getStart(), page.getCount());
+        List<User> userList = userService.list();
+        int total = (int) new PageInfo<>(userList).getTotal();
+        page.setTotal(total);
+        model.addAttribute("page", page);
         model.addAttribute("us", userList);
         return "admin/listUser";
     }
 
 
     // ----------------订单---------------------------------------
-
     @RequestMapping("admin_order_list")
     public String adminOrderList(Model model, Page page) {
-        List<Order> orderList = orderService.list(page);
+        PageHelper.offsetPage(page.getStart(), page.getCount());
+        List<Order> orderList = orderService.list();
+        int total = (int) new PageInfo<>(orderList).getTotal();
+        page.setTotal(total);
+        model.addAttribute("page", page);
         model.addAttribute("os", orderList);
         return "admin/listOrder";
     }

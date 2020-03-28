@@ -15,18 +15,7 @@
     </resultMap>
 
     <select id="list" parameterType="Integer" resultType="Property">
-        select id, cid, name from property where cid = #{cid}
-        <if test="page.start!=null and page.count!=null">
-            limit #{page.start}, #{page.count}
-        </if>
-    </select>
-
-    <select id="listByCid" parameterType="Integer" resultType="Property">
         select id, cid, name from property where cid = #{cid} order by id asc
-    </select>
-
-    <select id="total" parameterType="Integer" resultType="Integer">
-        select count(*) from property where cid = #{cid}
     </select>
 
     <select id="get" parameterType="Integer" resultMap="propertyMap">

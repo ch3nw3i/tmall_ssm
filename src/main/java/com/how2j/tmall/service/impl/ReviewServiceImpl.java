@@ -23,7 +23,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Integer count(Integer pid) {
-        return reviewMapper.count(pid);
+    public Integer total(Integer pid) {
+        return reviewMapper.total(pid);
     }
 }

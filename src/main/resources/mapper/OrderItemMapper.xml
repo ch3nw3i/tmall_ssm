@@ -26,7 +26,7 @@
 
     <select id="list" parameterType="OrderItem" resultMap="orderItemMap">
         select oi.id, oi.pid, oi.oid, oi.uid, oi.number,
-               p.id as pid, p.name, p.promotePrice
+               p.id as pid, p.name, p.stock, p.originalPrice, p.promotePrice
         from orderitem oi
         left join product p on oi.pid = p.id
         where uid = #{uid} and oid = #{oid}
@@ -40,26 +40,18 @@
         where oi.uid = #{uid}
     </select>
 
-    <select id="count" parameterType="Integer" resultType="Integer">
+    <select id="total" parameterType="Integer" resultType="Integer">
         select count(*) from orderitem where pid = #{pid}
     </select>
 
-    <select id="get" parameterType="Integer" resultMap="orderItemMap">
+    <select id="listByOid" parameterType="Integer" resultMap="orderItemMap">
         select oi.id, oi.pid, oi.oid, oi.uid, oi.number,
                p.id as pid, p.name, p.promotePrice,
                pi.id, pi.pid, pi.type
         from orderitem oi
         left join product p on oi.pid = p.id
         left join productimage pi on p.id = pi.pid
-        where oi.id = #{id}
-    </select>
-
-    <select id="listByOid" parameterType="Integer" resultMap="orderItemMap">
-        select oi.id, oi.pid, oi.oid, oi.uid, oi.number,
-               p.id as pid, p.name, p.promotePrice
-        from orderitem oi
-                 left join product p on oi.pid = p.id
-        where oi.oid = #{oid}
+        where oi.id = #{oid}
     </select>
 
     <insert id="insert" parameterType="OrderItem" keyProperty="id" useGeneratedKeys="true">

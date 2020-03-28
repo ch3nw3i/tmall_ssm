@@ -6,11 +6,8 @@
 
     <select id="list" resultType="User">
         select id, name from user order by id asc
-        <if test="page.start!=null and page.count!=null">
-            limit #{page.start}, #{page.count}
-        </if>
     </select>
-    
+
     <select id="total" resultType="Integer">
         select count(*) from user
     </select>

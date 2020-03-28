@@ -12,16 +12,9 @@ import java.util.List;
 public interface UserMapper {
     /**
      *
-     * @param page
      * @return
      */
-    List<User> list(@Param("page") Page page);
-
-    /**
-     *
-     * @return
-     */
-    Integer total();
+    List<User> list();
 
     /**
      *

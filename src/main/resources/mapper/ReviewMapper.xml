@@ -8,7 +8,7 @@
         select id, content, uid, pid, createDate from review where pid = #{pid} order by createDate desc
     </select>
 
-    <select id="count" parameterType="Integer" resultType="Integer">
+    <select id="total" parameterType="Integer" resultType="Integer">
         select count(*) from review where pid = #{pid}
     </select>
 </mapper>
