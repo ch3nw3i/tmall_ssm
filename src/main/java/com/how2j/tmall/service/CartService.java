@@ -28,4 +28,6 @@ public interface CartService {
 
     void update(Cart cart);
 
+    Cart get(Integer id);
+
 }

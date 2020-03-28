@@ -55,31 +55,31 @@
                 #{uid}, #{status}, #{totalPrice}, #{totalNumber} )
     </insert>
 
-    <update id="pay" parameterType="Integer">
-        update `order` set status = 'waitDelivery' where id = #{id}
-    </update>
-
-    <update id="delivery" parameterType="Integer">
-        update `order` set status = 'waitConfirm' where id = #{id}
-    </update>
+    <select id="getLastOid" resultType="Integer">
+        select id from `order` order by id desc limit 1
+    </select>
 
     <select id="getLastOrderCode" resultType="String">
         select orderCode from `order` order by id desc limit 1
     </select>
 
-    <update id="confirmPay" parameterType="Integer">
-        update 'order' set status = 'waitReview' where id = #{id}
+    <update id="delivery" parameterType="Order">
+        update `order` set status = 'waitConfirm', deliveryDate = #{deliveryDate} where id = #{id}
     </update>
 
-    <select id="getLastOid" resultType="Integer">
-        select id from `order` order by id desc limit 1
-    </select>
-
     <update id="payed" parameterType="Order">
+        update `order` set status = 'waitDelivery', payDate = #{payDate} where id = #{id}
+    </update>
 
+    <update id="confirmPay" parameterType="Order">
+        update `order` set status = 'waitReview', confirmDate = #{confirmDate} where id = #{id}
     </update>
 
     <select id="selectById" parameterType="Integer" resultType="Order">
         select * from `order` where id = #{id}
     </select>
+
+    <delete id="delete" parameterType="Integer">
+        delete from `order` where id = #{id}
+    </delete>
 </mapper>

@@ -37,24 +37,25 @@ public class CategoryServiceImpl implements CategoryService {
         List<Category> list = categoryMapper.list();
         for (Category category : list) {
             List<Product> productList = productService.list(category.getId());
-
-            List<List<Product>> rows = new ArrayList<List<Product>>();
-            List<Product> row = new ArrayList<Product>();
-            //定义批次分组提交量
-            int groupItemCount = 5;
-            //被分隔集合的总数量
-            int totalCount = productList.size() - 1;
-            //一共被分几组
-            int count = totalCount % groupItemCount == 0 ? totalCount / groupItemCount : totalCount / groupItemCount + 1;
-            for (int i = 0; i <= count; i += 5) {
-                if (count * groupItemCount <= totalCount) {
-                    row = productList.subList(i, count * groupItemCount);
-                } else {
-                    row = productList.subList(i, totalCount);
+            if (!productList.isEmpty()) {
+                List<List<Product>> rows = new ArrayList<List<Product>>();
+                List<Product> row = new ArrayList<Product>();
+                //定义批次分组提交量
+                int groupItemCount = 5;
+                //被分隔集合的总数量
+                int totalCount = productList.size() - 1;
+                //一共被分几组
+                int count = totalCount % groupItemCount == 0 ? totalCount / groupItemCount : totalCount / groupItemCount + 1;
+                for (int i = 0; i <= count; i += 5) {
+                    if (count * groupItemCount <= totalCount) {
+                        row = productList.subList(i, count * groupItemCount);
+                    } else {
+                        row = productList.subList(i, totalCount);
+                    }
+                    rows.add(row);
                 }
-                rows.add(row);
+                category.setProductsByRow(rows);
             }
-            category.setProductsByRow(rows);
         }
         return list;
     }

@@ -1,10 +1,7 @@
 package com.how2j.tmall.controller;
 
 import com.how2j.tmall.pojo.*;
-import com.how2j.tmall.service.CartService;
-import com.how2j.tmall.service.OrderItemService;
-import com.how2j.tmall.service.OrderService;
-import com.how2j.tmall.service.ProductService;
+import com.how2j.tmall.service.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,6 +27,12 @@ public class OrderController {
     @Autowired
     private ProductService productService;
 
+    /**
+     * 显示购物车
+     * @param model
+     * @param session
+     * @return
+     */
     @RequestMapping("forecart")
     public String foreCart(Model model, HttpSession session) {
         User u = (User) session.getAttribute("user");
@@ -55,7 +58,7 @@ public class OrderController {
     }
 
     /**
-     * 立即购买
+     * 商品页 立即购买
      * @param pid
      * @return
      */
@@ -98,11 +101,26 @@ public class OrderController {
         return "success";
     }
 
+    /**
+     * 获取勾选的商品的购物车id，传递到订单结算页面
+     * @param id
+     * @param model
+     * @param session
+     * @return
+     */
     @RequestMapping("forebuy")
-    public String foreBuy(@Param("id") List<Integer> idList, Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        List<Cart> cartList = cartService.listByUid(user.getId());
+    public String foreBuy(@Param("id") String id, Model model, HttpSession session) {
+        String[] split = id.split(",");
+        List<Cart> cartList = new ArrayList<>();
+        Float total = 0.0f;
+        for (String s : split) {
+            Cart cart = cartService.get(Integer.parseInt(s));
+            total += cart.getProduct().getPromotePrice();
+            cartList.add(cart);
+        }
+        session.setAttribute("cartList", cartList);
         model.addAttribute("carts", cartList);
+        model.addAttribute("total", total);
         return "/fore/buy";
     }
 
@@ -119,16 +137,19 @@ public class OrderController {
     }
 
     /**
-     * 用户确认收货
+     * 用户确认收货 界面
      */
     @RequestMapping("foreconfirmPay")
-    public String foreConfirmPay(@Param("oid") Integer oid) {
-        orderService.confirmPay(oid);
-        return "/fore/payed";
+    public String foreConfirmPay(@Param("oid") Integer oid, Model model) {
+        Order order = orderService.getById(oid);
+        List<OrderItem> orderItemList = orderItemService.listByOid(oid);
+        order.setOrderItems(orderItemList);
+        model.addAttribute("o", order);
+        return "/fore/confirmPay";
     }
 
     /**
-     * 下订单
+     * 下订单，跳转到 支付页面
      * @param order
      * @param model
      * @param session
@@ -136,7 +157,7 @@ public class OrderController {
      */
     @RequestMapping("forecreateOrder")
     public String foreCreateOrder(Order order, Model model, HttpSession session) {
-        List<Cart> cartList = (List<Cart>) session.getAttribute("carts");
+        List<Cart> cartList = (List<Cart>) session.getAttribute("cartList");
         User u = (User) session.getAttribute("user");
         List<OrderItem> orderItemList = new ArrayList<>();
         order.setUid(u.getId());
@@ -149,10 +170,25 @@ public class OrderController {
             orderItemList.add(oi);
         }
         orderService.addOrder(order, orderItemList);
-        // !!! 可能出现问题的代码 !!!
-        Integer lastOid = orderService.getLastOid();
+        for (Cart c: cartList) {
+            cartService.delete(c.getId());
+        }
         model.addAttribute("totalPrice", order.getTotalPrice());
-        model.addAttribute("oid", lastOid);
+        model.addAttribute("oid", order.getId());
+        return "/fore/alipay";
+    }
+
+    /**
+     * 跳转到支付成功
+     * @param oid
+     * @param total
+     * @param model
+     * @return
+     */
+    @RequestMapping("forealipay")
+    public String foreAlipay(@Param("oid") Integer oid, @Param("total") Float total, Model model) {
+        model.addAttribute("oid", oid);
+        model.addAttribute("totalPrice", total);
         return "/fore/alipay";
     }
 
@@ -176,8 +212,38 @@ public class OrderController {
      * @return
      */
     @RequestMapping("foreorderConfirmed")
-    public String foreOrderConfirmed(Model model) {
+    public String foreOrderConfirmed(Integer oid) {
+        orderService.confirmPay(oid);
+        return "/fore/orderConfirmed";
+    }
 
-        return "/fore/confirmPay";
+
+    /**
+     * 删除订单
+     * @return
+     */
+    @RequestMapping("foredeleteOrder")
+    public String foreDeleteOrder(Integer oid) {
+        Integer result = orderService.delete(oid);
+        if (result == 1) {
+            return "success";
+        } else {
+            return "false";
+        }
+    }
+
+    /**
+     * 跳转 评论页面
+     * @param oid
+     * @param model
+     * @return
+     */
+    @RequestMapping("forereview")
+    public String foreReview(Integer oid, Model model) {
+        Order order = orderService.getById(oid);
+        List<OrderItem> orderItemList = orderItemService.listByOid(order.getId());
+        order.setOrderItems(orderItemList);
+        model.addAttribute("o", order);
+        return "/fore/review";
     }
 }

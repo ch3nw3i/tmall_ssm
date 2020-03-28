@@ -2,8 +2,10 @@ package com.how2j.tmall.service.impl;
 
 import com.how2j.tmall.mapper.OrderItemMapper;
 import com.how2j.tmall.mapper.OrderMapper;
+import com.how2j.tmall.pojo.Cart;
 import com.how2j.tmall.pojo.Order;
 import com.how2j.tmall.pojo.OrderItem;
+import com.how2j.tmall.service.CartService;
 import com.how2j.tmall.service.OrderItemService;
 import com.how2j.tmall.service.OrderService;
 import com.how2j.tmall.util.Page;
@@ -23,6 +25,8 @@ public class OrderServiceImpl implements OrderService {
     private OrderMapper orderMapper;
     @Autowired
     private OrderItemService orderItemService;
+    @Autowired
+    private CartService cartService;
 
     /**
      *
@@ -40,7 +44,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void delivery(Integer id) {
-        orderMapper.delivery(id);
+        Order order = orderMapper.selectById(id);
+        order.setDeliveryDate(new Date());
+        orderMapper.delivery(order);
     }
 
     @Override
@@ -60,7 +66,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void addOrder(Order order, List<OrderItem> orderItemList) {
-        String newOrderCode = Integer.valueOf(orderMapper.getLastOrderCode() + 1).toString();
+        String newOrderCode = Integer.valueOf(Integer.valueOf(orderMapper.getLastOrderCode()) + 1).toString();
         order.setOrderCode(newOrderCode);
         order.setCreateDate(new Date());
         order.setStatus("waitPay");
@@ -73,28 +79,28 @@ public class OrderServiceImpl implements OrderService {
         order.setTotalPrice(totalPrice);
         order.setTotalNumber(totalNumber);
         orderMapper.insert(order);;
-        // !!! 可能出现问题的代码 !!!
-        Integer lastOid = orderMapper.getLastOid();
         for (OrderItem oi : orderItemList) {
-            oi.setOid(lastOid);
+            oi.setOid(order.getId());
         }
         orderItemService.insert(orderItemList);
     }
 
     @Override
     public void confirmPay(Integer id) {
-        orderMapper.confirmPay(id);
+        Order order = orderMapper.selectById(id);
+        order.setConfirmDate(new Date());
+        orderMapper.confirmPay(order);
     }
 
-    @Override
-    public Integer getLastOid() {
-        return orderMapper.getLastOid();
-    }
+//    @Override
+//    public Integer getLastOid() {
+//        return orderMapper.getLastOid();
+//    }
 
     @Override
     public void payed(Integer id) {
         Order order = orderMapper.selectById(id);
-        order.setStatus("waitDelivery");
+//        order.setStatus("waitDelivery");
         order.setPayDate(new Date());
         orderMapper.payed(order);
     }
@@ -102,5 +108,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order getById(Integer id) {
         return orderMapper.selectById(id);
+    }
+
+
+    @Override
+    public Integer delete(Integer id) {
+        return orderMapper.delete(id);
     }
 }

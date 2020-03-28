@@ -15,7 +15,7 @@
 			<fmt:formatDate value="${o.payDate}" pattern="yyyy-MM-dd HH:mm:ss"/> 
 		</div>
 		<div class="confirmPayTime3">
-			yyyy-MM-dd HH:mm:ss 
+			<fmt:formatDate value="${o.deliveryDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 		</div>
 	</div>
 	<div class="confirmPayOrderInfoDiv">
@@ -37,15 +37,15 @@
 					<td class="confirmPayOrderItemProductLink">
 						<a href="#nowhere">${oi.product.name}</a>
 					</td>
-					<td>￥<fmt:formatNumber type="number" value="${oi.product.originalPrice}" minFractionDigits="2"/></td>
-					<td>1</td>
+					<td>￥<fmt:formatNumber type="number" value="${oi.product.promotePrice}" minFractionDigits="2"/></td>
+					<td>${oi.number}</td>
 					<td><span class="conformPayProductPrice">￥<fmt:formatNumber type="number" value="${oi.product.promotePrice}" minFractionDigits="2"/></span></td>
 					<td><span>快递 ： 0.00 </span></td>
 				</tr>
 			</c:forEach>
 		</table>
 		<div class="confirmPayOrderItemText pull-right">
-			实付款： <span class="confirmPayOrderItemSumPrice">￥<fmt:formatNumber type="number" value="${o.total}" minFractionDigits="2"/></span>
+			实付款： <span class="confirmPayOrderItemSumPrice">￥<fmt:formatNumber type="number" value="${o.totalPrice}" minFractionDigits="2"/></span>
 		</div>
 	</div>
 	<div class="confirmPayOrderDetailDiv">

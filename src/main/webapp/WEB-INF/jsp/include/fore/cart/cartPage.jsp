@@ -123,7 +123,7 @@
             $(".cartProductItemIfSelected").each(function () {
                 if ("selectit" == $(this).attr("selectit")) {
                     var cartid = $(this).attr("cartid");
-                    params += "&id=" + id;
+                    params += "&id=" + cartid;
                 }
             });
             params = params.substring(1);
