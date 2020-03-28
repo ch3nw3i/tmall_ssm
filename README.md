@@ -80,7 +80,9 @@ MySQL转储文件位于 `sql\tmall_ssm.sql`
 
 ### 表之间关系
 
-![db-table-relation](https://github.com/ch3nw3i/tmall_ssm/blob/master/README/db-table-relation.png)
+![db-table-relation](raw.githubusercontent.com/ch3nw3i/tmall_ssm/README/db-table-relation.png)
+
+
 
 ## 项目结构
 
@@ -154,4 +156,4 @@ MySQL转储文件位于 `sql\tmall_ssm.sql`
 
 以admin_category_list为例：
 
-![admin-category-list](https://github.com/ch3nw3i/tmall_ssm/blob/master/README/admin-category-list.png)
+![admin-category-list](raw.githubusercontent.com/ch3nw3i/tmall_ssm/README/admin-category-list.png)
