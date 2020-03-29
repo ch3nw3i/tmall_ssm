@@ -12,6 +12,7 @@ import com.how2j.tmall.util.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.net.Inet4Address;
 import java.util.Date;
 import java.util.List;
 
@@ -66,8 +67,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void addOrder(Order order, List<OrderItem> orderItemList) {
-        String newOrderCode = Integer.valueOf(Integer.valueOf(orderMapper.getLastOrderCode()) + 1).toString();
-        order.setOrderCode(newOrderCode);
+        order.setOrderCode(String.valueOf(Integer.parseInt(orderMapper.getLastOrderCode()) + 1));
         order.setCreateDate(new Date());
         order.setStatus("waitPay");
         Double totalPrice = 0.0d;
