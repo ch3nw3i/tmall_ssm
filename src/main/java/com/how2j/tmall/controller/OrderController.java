@@ -65,17 +65,19 @@ public class OrderController {
     @RequestMapping("forebuyone")
     public String foreBuyOne(@Param("pid") Integer pid, @Param("num") Integer num, Model model, HttpSession session) {
         User u = (User) session.getAttribute("user");
-        Cart cart = new Cart();
+        Order order = new Order();
+        List<OrderItem> ois = new ArrayList<>();
+        OrderItem oi = new OrderItem();
         Product product = productService.get(pid);
-        cart.setNumber(num);
-        cart.setProduct(product);
+        oi.setNumber(num);
+        oi.setProduct(product);
         Double total = 0.0d;
-        total += cart.getNumber() * cart.getProduct().getPromotePrice();
-        List<Cart> cartList = new ArrayList<>();
-        cartList.add(cart);
+        total += oi.getNumber() * oi.getProduct().getPromotePrice();
+        ois.add(oi);
+        order.setOrderItems(ois);
         model.addAttribute("total", total);
-        model.addAttribute("carts", cartList);
-        session.setAttribute("carts", cartList);
+        model.addAttribute("carts", ois);
+        session.setAttribute("order", order);
         return "/fore/buy";
     }
 
@@ -158,20 +160,37 @@ public class OrderController {
     @RequestMapping("forecreateOrder")
     public String foreCreateOrder(Order order, Model model, HttpSession session) {
         List<Cart> cartList = (List<Cart>) session.getAttribute("cartList");
+        Order o = (Order) session.getAttribute("order");
         User u = (User) session.getAttribute("user");
-        List<OrderItem> orderItemList = new ArrayList<>();
-        order.setUid(u.getId());
-        for (Cart c : cartList) {
-            OrderItem oi = new OrderItem();
-            oi.setNumber(c.getNumber());
-            oi.setProduct(c.getProduct());
-            oi.setPid(oi.getProduct().getId());
-            oi.setUid(u.getId());
-            orderItemList.add(oi);
+        // 商品页直接购买执行该流程
+        if (o != null) {
+            List<OrderItem> orderItemList = o.getOrderItems();
+            for (OrderItem oi : orderItemList) {
+                oi.setPid(oi.getProduct().getId());
+                oi.setUid(u.getId());
+            }
+            order.setUid(u.getId());
+            orderService.addOrder(order, o.getOrderItems());
+            session.removeAttribute("order");
         }
-        orderService.addOrder(order, orderItemList);
-        for (Cart c: cartList) {
-            cartService.delete(c.getId());
+
+        // 购物车购买执行该流程
+        if (cartList != null) {
+            List<OrderItem> orderItemList = new ArrayList<>();
+            order.setUid(u.getId());
+            for (Cart c : cartList) {
+                OrderItem oi = new OrderItem();
+                oi.setNumber(c.getNumber());
+                oi.setProduct(c.getProduct());
+                oi.setPid(oi.getProduct().getId());
+                oi.setUid(u.getId());
+                orderItemList.add(oi);
+            }
+            orderService.addOrder(order, orderItemList);
+            for (Cart c : cartList) {
+                cartService.delete(c.getId());
+            }
+            session.removeAttribute("orderList");
         }
         model.addAttribute("totalPrice", order.getTotalPrice());
         model.addAttribute("oid", order.getId());

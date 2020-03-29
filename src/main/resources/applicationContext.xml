@@ -4,11 +4,11 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:jdbc="http://www.springframework.org/schema/jdbc"
        xmlns:p="http://www.springframework.org/schema/p"
-       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
-        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 
     <context:component-scan base-package="com.how2j.tmall.service"/>
@@ -29,7 +29,7 @@
         <property name="typeAliasesPackage" value="com.how2j.tmall.pojo"/>
         <property name="dataSource" ref="dataSource"/>
         <property name="mapperLocations" value="classpath:mapper/*Mapper.xml"/>
-<!--        分页插件，目前先注释，后面重构的时候才会使用-->
+        <!-- 分页插件，目前先注释，后面重构的时候才会使用-->
         <property name="plugins">
             <array>
                 <bean class="com.github.pagehelper.PageInterceptor">
@@ -50,22 +50,28 @@
 
     <!-- 配置Spring框架 声明式事务管理 -->
     <!-- 配置事务管理器对象 -->
-<!--    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">-->
-<!--        <property name="dataSource" ref="dataSource"/>-->
-<!--    </bean>-->
-<!--    &lt;!&ndash; 配置事务通知 &ndash;&gt;-->
-<!--    <tx:advice id="txAdvice" transaction-manager="transactionManager">-->
-<!--        <tx:attributes>-->
-<!--            &lt;!&ndash;            <tx:method name="update*" propagation="REQUIRES_NEW" rollback-for="Exception" />&ndash;&gt;-->
-<!--            &lt;!&ndash;            <tx:method name="delete*" propagation="REQUIRES_NEW" />&ndash;&gt;-->
-<!--            <tx:method name="find*" read-only="true" propagation="SUPPORTS"/>-->
-<!--            <tx:method name="*" isolation="DEFAULT" />-->
-<!--        </tx:attributes>-->
-<!--    </tx:advice>-->
-<!--    &lt;!&ndash; 配置AOP增强 &ndash;&gt;-->
-<!--    <aop:config>-->
-<!--        <aop:advisor advice-ref="txAdvice" pointcut="execution(public * com.stair.service.impl.*ServiceImpl.*(..))"/>-->
-<!--    </aop:config>-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!-- 配置事务通知 事务传播特性 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="list*" read-only="true" propagation="SUPPORTS"/>
+            <tx:method name="get*" read-only="true" propagation="SUPPORTS"/>
+            <tx:method name="count*" read-only="true" propagation="SUPPORTS"/>
+            <tx:method name="total*" read-only="true" propagation="SUPPORTS"/>
+            <tx:method name="insert*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="add*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="update*" propagation="REQUIRES_NEW" rollback-for="Exception" />
+            <tx:method name="delete*" propagation="REQUIRES_NEW" rollback-for="Exception" />
+            <tx:method name="*" isolation="DEFAULT" />
+        </tx:attributes>
+    </tx:advice>
+    <!-- 配置AOP增强 -->
+    <aop:config>
+        <aop:advisor advice-ref="txAdvice" pointcut="execution(public * com.how2j.tmall.service.impl.*ServiceImpl.*(..))"/>
+    </aop:config>
+    <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <context:annotation-config />
 </beans>

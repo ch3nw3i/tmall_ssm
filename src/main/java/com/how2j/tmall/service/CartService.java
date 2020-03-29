@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface CartService {
     /**
-     *
+     * 根据uid获取该用户的购物车商品信息
      * @param uid
      * @return
      */
